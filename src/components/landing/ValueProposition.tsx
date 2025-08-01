@@ -71,12 +71,12 @@ export default function ValueProposition() {
             style={{ transitionDelay: '300ms' }}
           >
              <Image 
-                src="https://placehold.co/800x600.png"
-                alt="Collaboration ecosystem"
+                src="/images/platform.png"
+                alt="SBTC collaboration platform ecosystem"
                 width={800}
                 height={600}
                 className="rounded-lg transform hover:scale-105 transition-transform duration-300"
-                data-ai-hint="collaboration ecosystem"
+                data-ai-hint="SBTC platform"
              />
           </div>
         </div>
