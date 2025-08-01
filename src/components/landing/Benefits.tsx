@@ -1,5 +1,8 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainCircuit, FlaskConical, Share2, Handshake, PiggyBank, Users, Globe } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const lockerRoomBenefits = [
   {
@@ -28,10 +31,38 @@ const concreteActions = [
 
 
 export default function Benefits() {
+  // ヘッダーアニメーション
+  const headerAnimation = useScrollAnimation<HTMLDivElement>({ threshold: 0.2, triggerOnce: true });
+  
+  // メインカードアニメーション（段階的）
+  const mainCardAnimations = [
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true })
+  ];
+
+  // アクションセクションアニメーション
+  const actionSectionAnimation = useScrollAnimation<HTMLDivElement>({ threshold: 0.2, triggerOnce: true });
+  
+  // アクションアイテムアニメーション（段階的）
+  const actionItemAnimations = [
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.4, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.4, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.4, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.4, triggerOnce: true })
+  ];
+
   return (
     <section id="benefits" className="bg-white/30 dark:bg-black/10 py-20 sm:py-32">
       <div className="container mx-auto px-4">
-        <div className="text-center">
+        <div 
+          ref={headerAnimation.ref}
+          className={`text-center transition-all duration-1000 ease-out ${
+            headerAnimation.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">
             ここでしか得られない価値：「ロッカールーム」への招待
           </h2>
@@ -41,30 +72,57 @@ export default function Benefits() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {lockerRoomBenefits.map((benefit) => (
-            <Card key={benefit.title} className="border-accent/50 bg-transparent text-center shadow-lg">
-              <CardHeader className="items-center">
-                <div className="rounded-full bg-accent/10 p-4">
-                    {benefit.icon}
-                </div>
-                <CardTitle className="mt-4">{benefit.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{benefit.description}</p>
-              </CardContent>
-            </Card>
+          {lockerRoomBenefits.map((benefit, index) => (
+            <div
+              key={benefit.title}
+              ref={mainCardAnimations[index].ref}
+              className={`transition-all duration-1000 ease-out ${
+                mainCardAnimations[index].isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: `${index * 200}ms` }}
+            >
+              <Card className="border-accent/50 bg-transparent text-center shadow-lg transform hover:scale-105 transition-transform duration-300">
+                <CardHeader className="items-center">
+                  <div className="rounded-full bg-accent/10 p-4">
+                      {benefit.icon}
+                  </div>
+                  <CardTitle className="mt-4">{benefit.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{benefit.description}</p>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
         
-        <div className="mt-20">
-            <Card className="p-8">
+        <div 
+          ref={actionSectionAnimation.ref}
+          className={`mt-20 transition-all duration-1000 ease-out ${
+            actionSectionAnimation.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
+            <Card className="p-8 transform hover:scale-[1.02] transition-transform duration-300">
                 <div className="text-center">
                     <h3 className="text-2xl font-bold text-primary">具体的なアクションへ直結</h3>
                     <p className="mx-auto mt-2 max-w-lg text-muted-foreground">単なる情報交換ではない。具体的なビジネスチャンスに直結するアクションを生み出し続けます。</p>
                 </div>
                 <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-4">
-                    {concreteActions.map((action) => (
-                        <div key={action.name} className="flex flex-col items-center gap-3">
+                    {concreteActions.map((action, index) => (
+                        <div 
+                          key={action.name} 
+                          ref={actionItemAnimations[index].ref}
+                          className={`flex flex-col items-center gap-3 transition-all duration-1000 ease-out transform hover:scale-110 hover:text-primary ${
+                            actionItemAnimations[index].isVisible 
+                              ? 'opacity-100 translate-y-0 scale-100' 
+                              : 'opacity-0 translate-y-6 scale-95'
+                          }`}
+                          style={{ transitionDelay: `${index * 150}ms` }}
+                        >
                             {action.icon}
                             <span className="font-semibold">{action.name}</span>
                         </div>
