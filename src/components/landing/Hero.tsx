@@ -1,33 +1,38 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useStaggeredAnimation } from "@/hooks/use-initial-animation";
 
 export default function Hero() {
+  // 段階的な初期アニメーション
+  const initialAnimations = useStaggeredAnimation(4, 500, 200);
+
   return (
     <section className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white overflow-hidden">
       <Image
-        src="https://placehold.co/1920x1080.png"
-        alt="Background image of a sports stadium"
-        layout="fill"
-        objectFit="cover"
-        className="absolute inset-0 z-0"
-        data-ai-hint="sports stadium"
+        src="/images/network-background.jpg"
+        alt="Abstract network connections background"
+        fill
+        className="absolute inset-0 z-0 object-cover"
+        data-ai-hint="network technology"
       />
       <div className="absolute inset-0 bg-black/50 z-10" />
       <div className="relative z-20 container mx-auto px-4">
-        <h1 className="font-headline text-4xl font-bold tracking-tight text-white md:text-6xl">
+        <h1 className={`font-headline text-4xl font-bold tracking-tight text-white md:text-6xl ${initialAnimations[0].getAnimationClasses('scale')}`}>
           日本のスポーツを新たな時代の主役へ
         </h1>
-        <p className="mt-4 text-lg text-white/90 md:text-xl">
+        <p className={`mt-4 text-lg text-white/90 md:text-xl ${initialAnimations[1].getAnimationClasses('fadeUp')}`}>
           SportsBizTech Consortium (SBTC) 設立に向けた挑戦状
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-base text-white/80 md:text-lg">
+        <p className={`mx-auto mt-6 max-w-3xl text-base text-white/80 md:text-lg ${initialAnimations[2].getAnimationClasses('fadeUp')}`}>
           今、世界のスポーツ産業は、我々の想像を絶する速度と規模で変貌を遂げている。これは単なる変化ではない。新たな富と熱狂を生み出す「革命」だ。この歴史的な転換期を前に、我々は傍観者でいるのか、それとも未来を創る当事者となるのか。その選択が、日本のスポーツの未来を決定づける。
         </p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+        <div className={`mt-8 flex justify-center gap-4 ${initialAnimations[3].getAnimationClasses('scale')}`}>
+          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 transform hover:scale-105 transition-transform duration-200">
               <a href="#interest-form">挑戦に参加する</a>
           </Button>
-          <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+          <Button asChild size="lg" variant="outline" className="border-white text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transform hover:scale-105 transition-transform duration-200">
               <a href="#benefits">得られる価値を見る</a>
           </Button>
         </div>

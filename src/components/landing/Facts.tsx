@@ -1,5 +1,8 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Landmark, Handshake, DollarSign } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const facts = [
   {
@@ -35,10 +38,37 @@ const opportunities = [
 ]
 
 export default function Facts() {
+  // ヘーダーアニメーション
+  const headerAnimation = useScrollAnimation<HTMLDivElement>({ threshold: 0.2, triggerOnce: true });
+  
+  // ファクトカードアニメーション（段階的）
+  const factAnimations = [
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true })
+  ];
+
+  // オポチュニティカードアニメーション（段階的）
+  const opportunityAnimations = [
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true }),
+    useScrollAnimation<HTMLDivElement>({ threshold: 0.3, triggerOnce: true })
+  ];
+
+  // クロージングアニメーション
+  const closingAnimation = useScrollAnimation<HTMLDivElement>({ threshold: 0.2, triggerOnce: true });
+
   return (
     <section className="bg-white/30 dark:bg-black/10 py-20 sm:py-32">
       <div className="container mx-auto px-4">
-        <div className="text-center">
+        <div 
+          ref={headerAnimation.ref}
+          className={`text-center transition-all duration-1000 ease-out ${
+            headerAnimation.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">
             我々が直面する「圧倒的な差」と「無限の機会」
           </h2>
@@ -48,37 +78,66 @@ export default function Facts() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {facts.map((fact) => (
-            <Card key={fact.label} className="text-center">
-              <CardHeader>
-                <CardTitle className="text-muted-foreground text-xl font-medium">{fact.label}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-5xl font-bold text-primary">{fact.value}</p>
-              </CardContent>
-            </Card>
+          {facts.map((fact, index) => (
+            <div
+              key={fact.label}
+              ref={factAnimations[index].ref}
+              className={`transition-all duration-1000 ease-out ${
+                factAnimations[index].isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <Card className="text-center transform hover:scale-105 transition-transform duration-300">
+                <CardHeader>
+                  <CardTitle className="text-muted-foreground text-xl font-medium">{fact.label}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-5xl font-bold text-primary">{fact.value}</p>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
         
         <div className="mt-20">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                {opportunities.map((item) => (
-                    <Card key={item.title} className="flex flex-col items-center text-center">
-                        <CardHeader className="items-center">
-                            <div className="rounded-full bg-primary/10 p-4">
-                                {item.icon}
-                            </div>
-                            <CardTitle className="mt-4">{item.title}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-muted-foreground">{item.description}</p>
-                        </CardContent>
-                    </Card>
+                {opportunities.map((item, index) => (
+                    <div
+                      key={item.title}
+                      ref={opportunityAnimations[index].ref}
+                      className={`transition-all duration-1000 ease-out ${
+                        opportunityAnimations[index].isVisible 
+                          ? 'opacity-100 translate-y-0' 
+                          : 'opacity-0 translate-y-12'
+                      }`}
+                      style={{ transitionDelay: `${index * 200}ms` }}
+                    >
+                      <Card className="flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300">
+                          <CardHeader className="items-center">
+                              <div className="rounded-full bg-primary/10 p-4">
+                                  {item.icon}
+                              </div>
+                              <CardTitle className="mt-4">{item.title}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                              <p className="text-muted-foreground">{item.description}</p>
+                          </CardContent>
+                      </Card>
+                    </div>
                 ))}
             </div>
         </div>
 
-        <div className="mt-20 text-center">
+        <div 
+          ref={closingAnimation.ref}
+          className={`mt-20 text-center transition-all duration-1000 ease-out ${
+            closingAnimation.isVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
             <p className="text-lg font-semibold text-foreground">
                 このままでは、日本は世界のスポーツビジネスにおける「周回遅れ」になりかねない。
             </p>
