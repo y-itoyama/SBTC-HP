@@ -5,6 +5,17 @@ import { Toaster } from "@/components/ui/toaster"
 export const metadata: Metadata = {
   title: 'SBTC Landing Page',
   description: '日本のスポーツを新たな時代の主役へ',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    noarchive: true,
+    nosnippet: true,
+    noimageindex: true,
+    'max-snippet': 0,
+    'max-image-preview': 'none',
+    'max-video-preview': 0,
+  },
 };
 
 export default function RootLayout({

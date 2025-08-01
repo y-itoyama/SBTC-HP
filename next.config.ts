@@ -24,6 +24,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        // 全てのページでクローラーをブロック
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow, noarchive, nosnippet, noimageindex, nocache',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
